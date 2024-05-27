@@ -7,4 +7,5 @@ This is the code for a Unity game [Ants Simulator 2 - Total War](https://play.go
 ## Acknowledgements
 
 SharedArray - https://github.com/stella3d/SharedArray
+
 SpriteManager - https://github.com/mohsinkhan26/UISpriteManager
