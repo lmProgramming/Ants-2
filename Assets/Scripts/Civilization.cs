@@ -11,10 +11,6 @@ public class Civilization : MonoBehaviour
 
     public bool centreCivilization = false;
 
-    //public Sprite antSprite;
-    //public Sprite antSoldierSprite;
-    //public Sprite antQueenSprite;
-
     public int civIndex;
     public List<int> enemyIndexes;
 
@@ -47,6 +43,22 @@ public class Civilization : MonoBehaviour
         }
     }
 
+    float CalculateDistanceToNearestColony(Vector2 position)
+    {
+        float minDistance = Mathf.Infinity;
+
+        for (int i = 0; i < CivilizationsManager.Instance.activeCivilizations.Count; i++)
+        {
+            for (int j = 0; j < CivilizationsManager.Instance.activeCivilizations[i].colonies.Count; j++)
+            {
+                float distance = Vector2.Distance(CivilizationsManager.Instance.activeCivilizations[i].colonies[j].position, position);
+                minDistance = Mathf.Min(distance, minDistance);
+            }
+        }
+
+        return minDistance;
+    }
+
     public void SpawnStartingColonies(int coloniesAmount)
     {
         if (centreCivilization)
@@ -72,11 +84,12 @@ public class Civilization : MonoBehaviour
                 newColonyPos = new Vector2(Random.Range(-MapGenerator.mapWidthHalfWithoutWalls + 5, MapGenerator.mapWidthHalfWithoutWalls - 5) * 0.9f, Random.Range(-MapGenerator.mapHeightHalfWithoutWalls + 5, MapGenerator.mapHeightHalfWithoutWalls - 5) * 0.9f);
 
                 suitable = Colony.CheckIfCouldSpawnColony(MapGenerator.GridPos(newColonyPos), CivilizationsManager.GetColonyRadius());
+
+                minimalDistanceBetweenColonies *= 0.95f;
+                tries++;
+
                 if (!suitable)
                 {
-                    minimalDistanceBetweenColonies *= 0.95f;
-                    tries++;
-
                     if (tries > 100)
                     {
                         coloniesAmount--;
@@ -86,19 +99,11 @@ public class Civilization : MonoBehaviour
                     continue;
                 }
 
-                float minDistance = Mathf.Infinity;
+                float minDistance = CalculateDistanceToNearestColony(newColonyPos);
 
-                for (int i = 0; i < CivilizationsManager.Instance.activeCivilizations.Count; i++)
+                if (minDistance < minimalDistanceBetweenColonies)
                 {
-                    for (int j = 0; j < CivilizationsManager.Instance.activeCivilizations[i].colonies.Count; j++)
-                    {
-                        float distance = Vector2.Distance(CivilizationsManager.Instance.activeCivilizations[i].colonies[j].position, newColonyPos);
-                        if (distance < minimalDistanceBetweenColonies)
-                        {
-                            suitable = false;
-                            minDistance = Mathf.Min(distance, minDistance);
-                        }
-                    }
+                    suitable = false;
                 }
 
                 if (minDistance > bestDistance)
@@ -107,6 +112,7 @@ public class Civilization : MonoBehaviour
                     bestPos = newColonyPos;
                 }
 
+                // the position fits all the requirements
                 if (suitable)
                 {
                     AddColony(CivilizationsManager.Instance.SpawnColonyAt(newColonyPos, this, true));
@@ -114,15 +120,11 @@ public class Civilization : MonoBehaviour
 
                     break;
                 }
+                // spawn the colony in the best ever found spot
                 if (tries > 50)
                 {
                     AddColony(CivilizationsManager.Instance.SpawnColonyAt(bestPos, this, true));
                     coloniesAmount -= 1;
-                }
-                else
-                {
-                    minimalDistanceBetweenColonies *= 0.95f;
-                    tries++;
                 }
             }
         }
@@ -218,22 +220,4 @@ public class Civilization : MonoBehaviour
         }
         return foodCollected;
     }
-
-    public void UpdateGraph()
-    {
-
-    }
-
-    //public Sprite GetAntSprite(Ant.AntType antType)
-    //{
-    //    switch (antType)
-    //    {
-    //        case Ant.AntType.Soldier:
-    //            return antSoldierSprite;
-    //        case Ant.AntType.Queen:
-    //            return antQueenSprite;
-    //        default:
-    //            return antSprite;
-    //    }
-    //}
 }
