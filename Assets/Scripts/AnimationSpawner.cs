@@ -11,7 +11,7 @@ public sealed class AnimationSpawner : MonoBehaviour
     }
 
     [SerializeField] private GameObject popAnimation;
-    public static GameObject PopAnimation { get { return Instance.popAnimation; } }
+    public static GameObject PopAnimation => Instance.popAnimation;
 
     public static void AddPopAnimation(GameObject objectToAddAnimation)
     {

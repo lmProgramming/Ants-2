@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "71587649187",
+    "project_id": "ants-simulator-2",
+    "storage_bucket": "ants-simulator-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71587649187:android:f62c8fa7c11149fa8e5116",
+        "android_client_info": {
+          "package_name": "com.LMProgramming.AntsSimulator2TotalWar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "71587649187-gbvg287722ucadqoogadnrbjrvasjnh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOnHuRoiP77hGmD1IaptbLS1FndvDNbeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "71587649187-gbvg287722ucadqoogadnrbjrvasjnh3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
